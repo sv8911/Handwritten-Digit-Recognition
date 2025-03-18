@@ -1,0 +1,37 @@
+# Import necessary libraries
+import tensorflow as tf
+from tensorflow.keras import datasets, layers, models
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+
+# Check if GPU is available
+physical_devices = tf.config.list_physical_devices('GPU')
+print("Num GPUs Available:", len(physical_devices))
+if physical_devices:
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+
+# Step 1: Load and Preprocess the MNIST Dataset
+(train_images, train_labels), (test_images, test_labels) = datasets.mnist.load_data()
+
+# Normalize pixel values to 0-1
+train_images = train_images.astype('float32') / 255.0
+test_images = test_images.astype('float32') / 255.0
+
+# Reshape images to include channel dimension (28, 28, 1) for CNN
+train_images = train_images.reshape((train_images.shape[0], 28, 28, 1))
+test_images = test_images.reshape((test_images.shape[0], 28, 28, 1))
+
+# Convert labels to one-hot encoding
+train_labels = tf.keras.utils.to_categorical(train_labels, 10)
+test_labels = tf.keras.utils.to_categorical(test_labels, 10)
+
+# Step 2: Visualize Sample Images
+plt.figure(figsize=(10, 5))
+for i in range(10):
+    plt.subplot(2, 5, i+1)
+    plt.imshow(train_images[i].reshape(28, 28), cmap='gray')
+    plt.title(np.argmax(train_labels[i]))
+    plt.axis('off')
+plt.show()
