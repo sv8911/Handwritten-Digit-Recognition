@@ -63,3 +63,47 @@ history = model.fit(train_images, train_labels,
                     epochs=10, 
                     batch_size=64, 
                     validation_data=(test_images, test_labels))
+
+# Step 5: Evaluate the Model
+test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=2)
+print(f"\nTest Accuracy: {test_acc:.4f}")
+
+# Plot training & validation accuracy/loss
+plt.figure(figsize=(12, 4))
+
+# Accuracy Plot
+plt.subplot(1, 2, 1)
+plt.plot(history.history['accuracy'], label='Training Accuracy')
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+plt.title('Model Accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+
+# Loss Plot
+plt.subplot(1, 2, 2)
+plt.plot(history.history['loss'], label='Training Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.title('Model Loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+
+plt.show()
+
+# Generate Confusion Matrix
+y_pred = model.predict(test_images)
+y_pred_classes = np.argmax(y_pred, axis=1)
+y_true = np.argmax(test_labels, axis=1)
+
+cm = confusion_matrix(y_true, y_pred_classes)
+plt.figure(figsize=(10, 8))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.title('Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('True')
+plt.show()
+
+# Step 6: Save the Model (Optional)
+model.save('mnist_cnn_model.h5')
+print("Model saved as 'mnist_cnn_model.h5'")
