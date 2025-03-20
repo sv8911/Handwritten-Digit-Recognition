@@ -27,3 +27,5 @@ Hey there! This project is my take on teaching a computer to read handwritten di
   - Shows a confusion matrix to spot mix-ups (like 7s looking like 1s).
 - **Saving**: Stores the model so I can reuse it anytime.
 
+
+Keep learning:)
